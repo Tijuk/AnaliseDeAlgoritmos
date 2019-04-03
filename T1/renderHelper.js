@@ -55,3 +55,24 @@ class Render {
 		this.container.innerHTML = renderedArray;
 	}
 }
+
+class Performance {
+  constructor() {
+    this.iterator = {};
+  }
+  
+  iterOn(key) {
+    if(!this.iterator[key]) {
+      this.resetKey(key) = 0;
+    }
+    this.iterator[key]++;
+  }
+  
+  resetKey(key) {
+    this.iterator[key] = 0;
+  }
+  
+  result() {
+    return this.iterator;
+  }
+}
