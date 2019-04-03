@@ -61,11 +61,11 @@ class Performance {
     this.iterator = {};
   }
   
-  iterOn(key) {
+  iterOn(key, size = 0) {
     if(!this.iterator[key]) {
       this.resetKey(key) = 0;
     }
-    this.iterator[key]++;
+    this.iterator[key] += size;
   }
   
   resetKey(key) {
