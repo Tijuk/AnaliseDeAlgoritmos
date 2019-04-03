@@ -73,6 +73,9 @@ class Performance {
   }
   
   result() {
+	  let total = 0;
+	  Object.keys(this.iterator).forEach(iter => { total += this.iterator[iter] });
+	  this.iterator.total = total;
     return this.iterator;
   }
 }
