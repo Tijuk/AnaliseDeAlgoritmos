@@ -125,4 +125,5 @@ document.getElementById('button').onclick = () => {
 	render.result(findKth(array,k));
 	render.renderize();
 	render.reset();
+	console.log('Iterações: ', perf.result());
 }
