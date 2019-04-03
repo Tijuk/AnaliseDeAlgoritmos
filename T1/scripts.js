@@ -1,23 +1,44 @@
 var render = new Render();
-
+var perf = new Performance();
 var container = document.getElementById('container');
 
 
 const original = [75,36,79,27,96,25,20,81,29,20,-1,-7,9,70,52,49,7,1,0];
 
-function bubbleSort(array) {
+function swapWithNext(array, i) {
+  let temp = array[i];
+  array[i] = array[i+1];
+  array[i+1] = temp;
+}
 
+function bubbleSort(array) {
+  let updates = 1;
+  let size = array.length;
+  while(updates !== 0) {
+    updates = 0;
+    for(let i = 0; i < size - 1; i++) {
+      perf.iterOn('bubbleSort');
+      if(array[i] > array[i+1]) {
+        swapWithNext(array, i,i+1)
+        updates++;
+      }
+    }
+    size--;
+  }
 }
 
 function sorted(array) {
 	if(array.length > 1) {
+		perf.iterOn('sorted');
 		const pivot = array[0];
 		const L = [];
 		const R = [];
 		for(let i = 1; i < array.length; i++) {
+			perf.iterOn('sorted');
 			let pushAr = (array[i] < pivot) ? L : R;
 			pushAr.push(array[i]);
 		}
+		perf.iterOn('sorted', L.length + 1 + R.length);
 		return sorted(L).concat(pivot).concat(sorted(R));
 	} else {
 		return array;
@@ -27,6 +48,7 @@ function sorted(array) {
 function chunkify(arr, chunkSize = 5) {
 	const chunks = [];
 	for(let i = 0; i < arr.length; i++) {
+		perf.iterOn('chunkify');
 		const chunkIndex = Math.floor(i/chunkSize);
 		if(!chunks[chunkIndex]) {
 			chunks.push([]);
@@ -49,14 +71,12 @@ function MedOfMed(array, chunkSize = 5) {
 	// console.log(chunk);
 	const arraySize = array.length;
 	for(let i = 0; i < arraySize/chunkSize; i++) {
+		perf.iterOn('MedOfMed');
 		// console.log(i, chunk[i], Math.ceil((chunk[i].length - 1)/2), chunk[Math.ceil((chunk[i].length-1)/2)]);
 		MOM.push(chunk[i][Math.ceil((chunk[i].length-1)/2)]);
 	}
 	MOM = sorted(MOM);
 	const index = Math.ceil((MOM.length-1)/2)
-	if(MOM[index]) {
-		console.warn(MOM, index);
-	}
 	return MOM[index]
 }
 
@@ -73,6 +93,7 @@ function findKth(array, k) {
 	const L = [];
 	const R = [];
 	for(let i = 0; i < array.length; i++) {
+		perf.iterOn('findKth');
 		if(array[i] < pivot) {
 			L.push(array[i]);
 		}
@@ -94,10 +115,6 @@ function findKth(array, k) {
 		return findKth(R, k - L.length - 1);
 	}
 }
-
-// render.result(findKth(original, 3));
-
-// render.renderize();
 
 const input = document.getElementById('input');
 const valorDeK = document.getElementById('input2');
