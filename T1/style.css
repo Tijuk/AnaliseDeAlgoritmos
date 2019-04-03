@@ -1,0 +1,56 @@
+
+h1 {
+	text-align: left;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+.container { 
+	padding: 0;
+	margin: 0;
+	max-width: 100%;
+	word-wrap: ellipsis;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+}
+
+h1,h2 {
+	font-size: 24px;
+}
+
+#container {
+	overflow-y: scroll;
+	height: 100%;
+}
+
+.inputButtonContainer {
+	height: 100%;
+	width: 50%;
+	margin: 100px auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.inputButtonContainer input{
+	width: 100%;
+	margin: 5px;
+	padding: 5px;
+}
+
+.inputButtonContainer button{
+	width: 100%;
+	margin: 20px;
+	padding: 15px;
+}
+
+.step {
+	width: 80%;
+	text-align: left;
+	margin-left: auto;
+	
+}
