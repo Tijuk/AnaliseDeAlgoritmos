@@ -17,7 +17,6 @@ function bubbleSort(array) {
   while(updates !== 0) {
     updates = 0;
     for(let i = 0; i < size - 1; i++) {
-      perf.iterOn('bubbleSort');
       if(array[i] > array[i+1]) {
         swapWithNext(array, i,i+1)
         updates++;
@@ -29,16 +28,13 @@ function bubbleSort(array) {
 
 function sorted(array) {
 	if(array.length > 1) {
-		perf.iterOn('sorted');
 		const pivot = array[0];
 		const L = [];
 		const R = [];
 		for(let i = 1; i < array.length; i++) {
-			perf.iterOn('sorted');
 			let pushAr = (array[i] < pivot) ? L : R;
 			pushAr.push(array[i]);
 		}
-		perf.iterOn('sorted', L.length + 1 + R.length);
 		return sorted(L).concat(pivot).concat(sorted(R));
 	} else {
 		return array;
@@ -48,7 +44,6 @@ function sorted(array) {
 function chunkify(arr, chunkSize = 5) {
 	const chunks = [];
 	for(let i = 0; i < arr.length; i++) {
-		perf.iterOn('chunkify');
 		const chunkIndex = Math.floor(i/chunkSize);
 		if(!chunks[chunkIndex]) {
 			chunks.push([]);
@@ -71,7 +66,6 @@ function MedOfMed(array, chunkSize = 5) {
 	// console.log(chunk);
 	const arraySize = array.length;
 	for(let i = 0; i < arraySize/chunkSize; i++) {
-		perf.iterOn('MedOfMed');
 		// console.log(i, chunk[i], Math.ceil((chunk[i].length - 1)/2), chunk[Math.ceil((chunk[i].length-1)/2)]);
 		MOM.push(chunk[i][Math.ceil((chunk[i].length-1)/2)]);
 	}
@@ -93,7 +87,6 @@ function findKth(array, k) {
 	const L = [];
 	const R = [];
 	for(let i = 0; i < array.length; i++) {
-		perf.iterOn('findKth');
 		if(array[i] < pivot) {
 			L.push(array[i]);
 		}
@@ -103,15 +96,12 @@ function findKth(array, k) {
 	}
 	
 	if(L.length == k - 1) {
-		render.addStep(L,pivot,R, 'Fim');
 		return pivot;
 	} 
 	if(L.length > k - 1) {
-		render.addStep(L,pivot,R, 'Esquerda');
 		return findKth(L, k);
 	}
 	if(L.length < k - 1) {
-		render.addStep(L,pivot,R, 'Direita');
 		return findKth(R, k - L.length - 1);
 	}
 }
@@ -122,8 +112,14 @@ const valorDeK = document.getElementById('input2');
 document.getElementById('button').onclick = () => {
 	const array = input.value.split(',').map(Number);
 	const k = parseInt(valorDeK.value,10);
-	render.result(findKth(array,k));
-	render.renderize();
-	render.reset();
-	console.log('Iterações: ', perf.result());
+    if(k <= 0 || !k) {
+        render.result('Array|Index em formato invalido');
+      
+    } else {
+        render.result(findKth(array,k));
+	   
+    }
+    render.renderize();
+    render.reset();
+	
 }

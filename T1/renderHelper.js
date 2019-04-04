@@ -61,17 +61,6 @@ class Performance {
     this.iterator = {};
   }
   
-  iterOn(key, size = 0) {
-    if(!this.iterator[key]) {
-      this.resetKey(key) = 0;
-    }
-    this.iterator[key] += size;
-  }
-  
-  resetKey(key) {
-    this.iterator[key] = 0;
-  }
-  
   result() {
 	  let total = 0;
 	  Object.keys(this.iterator).forEach(iter => { total += this.iterator[iter] });
