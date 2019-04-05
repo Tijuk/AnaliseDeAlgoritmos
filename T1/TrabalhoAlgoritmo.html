@@ -7,17 +7,36 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
-	<body class="container">
-		<div class="inputButtonContainer">
-			<input id="input" type="text" placeholder="Insira os numeros"/>
-			<input id="input2" type="text" placeholder="Insira o valor de K"/>
-			<button id="button" class="btn btn-primary">Calcular
-			</button>
-			
+	<body id="container" class="container">
+        <div class="header">
+            <p class="title-1">PUC-Rio 2019.1</p>
+			 <p class="title-1">INF1721</p>
+            <p class="title-2">Trabalho 1 - Análise de Algoritmos</p>
+            <p class="title-3">Professor: <b>Marco Molinaro</b></p>
+            <p class="title-3">Grupo: Alexandre Dias (1413183)</p>
+        </div>
+        <div class="btnGroup">
+            <button id="performanceTest" class="btn btn-primary">Teste de Performance</button>
+            <button id="showStepByStep" class="btn btn-secondary">Passo a Passo</button>
+        </div>
+		<div id="step-inputsContainer" class="inputButtonContainer hide">
+			<textarea class="form-control" id="input1" rows="5"></textarea>
+			<input id="input2" type="number" placeholder="K, se deixado em branco K = n/2"/>
+            <button id="StepByStep" class="btn btn-primary">Calcular
+            </button>			
 		</div>
-		<div id="main"></div>
-		<script type="text/javascript" src="./renderHelper.js"></script>
-		<script type="text/javascript" src="./scripts.js"></script>
+		<div id="other">
+			<div id="main"></div>
+			<div id="error"></div>
+			<div id="grid"></div>
+		</div>
+	
+		<div id="loading" class="hide">Carregando...</div>
+        <script type="text/javascript" src="./constants.js"></script>
+		<script type="text/javascript" src="./helper.js"></script>
+		<script type="text/javascript" src="./selections.js"></script>
+		<script type="text/javascript" src="./tests.js"></script>
+		<script type="text/javascript" src="./main.js"></script>
 	</body>
 
 </html>
