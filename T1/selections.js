@@ -50,11 +50,8 @@ class LinearSelection extends GenericSelection{
 	}
 
 	findKthSmallest(array, k) {
-		if(this.iteractions > 10000000) {
-			throw "Stuck in loop"
-		}
 		if(array.length == 1) {
-			render.addStep([], array[0], [], 'fim', k, k);
+			render.addStep([], array[0], [], 'fim', k, k); // função não utilizada no teste de performance
 			return array[0];
 		}
 		if(array.length < 1) {
@@ -88,33 +85,27 @@ class LinearSelection extends GenericSelection{
 		}
 		let edge = k - nPivots;
 		const L_size = L.length;
-//		console.log({cond1: { value: (L_size + nPivots) > k, L_size, nPivots, Lsize_plus_nPivots: L_size + nPivots, k_1: k}, cond2: {value: L_size <= k, L_size, k_m1: k}});
-//		console.warn({L_size, edge});
 		if((L_size + nPivots) > k && L_size <= k) {
-//			console.warn(L_size + nPivots, k+1,L_size, k);
-//		   	console.log(L,pivot,R,'fim2');
-			render.addStep(L, pivot, R, 'fim2', k, edge);
-			return pivot; // O(1)
+			render.addStep(L, pivot, R, 'fim2', k, edge); // função não utilizada no teste de performance
+			return pivot;
 		}
 		if(L_size == edge) {
-//			console.log(L,pivot,R,'fim');
-			render.addStep(L, pivot, R, 'fim', k, edge);
-			return pivot; // O(1)
+			render.addStep(L, pivot, R, 'fim', k, edge); // função não utilizada no teste de performance
+			return pivot;
 
 		} 
 		else if(L_size > edge) {
 			if(L_size <= 0) {
-				render.addStep(L, pivot, R, 'fim3', k, edge);
+				render.addStep(L, pivot, R, 'fim3', k, edge); // função não utilizada no teste de performance
 				return pivot;
 			}
-			render.addStep(L, pivot, R, 'esquerda', k, edge);
+			render.addStep(L, pivot, R, 'esquerda', k, edge); // função não utilizada no teste de performance
 			return this.findKthSmallest(L, k);
 		}
 		else if(L_size < edge) {
-			render.addStep(L, pivot, R, 'direita', k, edge);
+			render.addStep(L, pivot, R, 'direita', k, edge); // função não utilizada no teste de performance
 			return this.findKthSmallest(R, k - (L_size) - nPivots - 1);
 		} else {
-//			console.log({array, L,R,L_size, Llength: L.length, edge, k});
 			console.error('glitch in the matrix');
 		}
 	}
@@ -129,24 +120,32 @@ class SortSelection extends GenericSelection{
 	  array[i+1] = temp;
 	}
 
-	bubbleSort(array) {
-		let updates = 1;
-		let size = array.length;
-		while(updates !== 0) {
-			updates = 0;
-			for(let i = 0; i < size - 1; i++) {
-				if(array[i] > array[i+1]) {
-					this.swapWithNext(array, i,i+1)
-					updates++;
+	bubbleSort(array, k) {
+		// let updates = 1;
+		let size = array.length - 1;
+		// for(let i = 0; i < size; i++) {
+		// 	for(let j = 0 ; j < size; j++) {
+		// 		updates++;
+		// 	}
+		// }
+		for( let i = 0 ; i < size ; i++) {
+			// console.log(array, k, i);
+			for( let j = 0; j < size - i; j++) {
+				if(array[j] > array[j+1]) {
+					let temp = array[j];
+	 				array[j] = array[j+1];
+	  				array[j+1] = temp;
 				}
 			}
-			size--;
+			if(size - i + 1 == k) {
+				break;
+			}
 		}
 		return array;
 	}
 	
 	findKthSmallest(array, k) {
 //		console.log(array);
-		return this.bubbleSort(array)[k];
+		return this.bubbleSort(array,k)[k];
 	}
 }

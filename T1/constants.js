@@ -15,8 +15,8 @@ const component = {
 
 const constants = {
 	arraysPerRun: 10,
-	arraySizeScale: 100,
-	reRuns: 5,
+	arraySizeScale: 1000,
+	reRuns: 10,
 }
 
 const ViewStates = {
