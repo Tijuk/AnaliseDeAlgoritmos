@@ -37,6 +37,7 @@ class Knapsack {
     }
 
     solve() {
+		return this.solveGreedy();
         const total = this.initTotalValuesAndCombos()
         let choose = 0
         const solution = []
@@ -181,7 +182,7 @@ class Knapsack {
             }
         }
         // console.log({ tV, tW })
-        return this.bag.items.map(remaining => 10 - remaining)
+        return tV; //this.bag.items.map(remaining => 10 - remaining)
     }
 
     solve2() {

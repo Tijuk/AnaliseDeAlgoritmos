@@ -79,7 +79,7 @@ class Log {
     }
 
     print(text) {
-        console.log(text + colors.Reset)
+        // console.log(text + colors.Reset)
         return this
     }
 }

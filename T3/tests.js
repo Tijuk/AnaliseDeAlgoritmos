@@ -12,7 +12,8 @@ class Test {
         const sample = Constants.examples[i]
         const bag = new Bag(sample.B, sample.n, sample.weights, sample.values)
         const dynamic = new Dynamic(bag)
-        const result = dynamic.solve()
+		const result = dynamic.solve()
+		console.log(result);
         let testSucceded = true
         sample.solution.some((value, index) => {
             if (result[index] !== value) {

@@ -173,7 +173,7 @@ const samples = [
     },
 ]
 
-const examples = [samples[10]]
+const examples = samples;
 
 module.exports = {
     examples,

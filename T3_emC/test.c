@@ -38,6 +38,7 @@ void loadExpected()
 			expectedValues[testIndex/2] = atoi(line);
 		}
 	}
+	// exit(0);
 }
 
 TestInstance loadOneTest(int index)
@@ -72,6 +73,7 @@ TestInstance loadOneTest(int index)
 	}
 	t.bag = newBag(size, n, weights, values);
 	t.expectedCombo = expectedCombos[index];
+	t.expectedValue = expectedValues[index];
 	free(fp);
 	return t;
 }
