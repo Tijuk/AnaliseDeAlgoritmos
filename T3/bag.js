@@ -12,9 +12,10 @@ class Bag {
         this.originalPositions = Array(n)
             .fill(0)
             .map((_, index) => index)
-        this.ratio = this.items.map(
-            (_, index) => this.values[index] / this.weights[index]
-        )
+        this.ratio = this.items.map((_, index) => {
+            const ratio = this.values[index] / this.weights[index]
+            return Math.round(100 * ratio) / 100
+        })
     }
 
     sortByValueWeightRatio() {
