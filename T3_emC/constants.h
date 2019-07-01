@@ -1,7 +1,7 @@
 #ifndef __CONSTANTS__H_
 #define __CONSTANTS__H_
 
-#define NUMBER_OF_TESTS 9
+#define NUMBER_OF_TESTS 11
 #define MAX_NUMBER_OF_ITEMS 100
 
 #define SET_OF_ITEM 10

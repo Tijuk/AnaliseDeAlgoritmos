@@ -59,7 +59,7 @@ int main() {
 	loadTests();
 	int index;
 	printf("Running [ %d ] tests\n", NUMBER_OF_TESTS);
-	for(index = 0; index < NUMBER_OF_TESTS; index++) {
+	for(index = 9; index < NUMBER_OF_TESTS; index++) {
 		runSingleTest(index);
 		// if(index == 4) break;
 	}
