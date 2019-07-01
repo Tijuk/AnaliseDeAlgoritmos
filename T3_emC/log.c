@@ -1,18 +1,14 @@
-/* Change console text color, then restore it back to normal. */
 #include <stdio.h>
-#include <windows.h>
 #include <stdarg.h>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+
+#include <windows.h>
+
 
 HANDLE hConsole;
 WORD original;
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
-
-// void my_print(const char* format, ...);
-// char *convert(unsigned int num, int base);
-
-void forceSkip() {
-	printf("\n");
-}
 
 void init()
 {
@@ -29,6 +25,33 @@ void reset()
 void setConsole(int color)
 {
 	SetConsoleTextAttribute(hConsole, color);
+}
+
+#else
+
+#define FOREGROUND_GREEN 1
+#define FOREGROUND_RED 1
+
+
+void init()
+{
+	
+}
+
+void reset()
+{
+	
+}
+
+void setConsole(int color)
+{
+	
+}
+
+#endif
+
+void forceSkip() {
+	printf("\n");
 }
 
 void success() {

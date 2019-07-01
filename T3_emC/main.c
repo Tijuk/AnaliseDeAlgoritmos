@@ -15,7 +15,6 @@ void printArray(int* values, int size) {
 		} else {
 			printf(",%d", values[i]);
 		}
-		
 	}
 	printf("]\n");
 }
@@ -24,16 +23,20 @@ void runSingleTest(int index) {
 	TestInstance test = getTestInstance(index);
 	bool testFailed = false;
 	int i;
-	printf("Running Test [ %d ]-----------------\n", index);
+	printf("Running Test [ %d ]-----------------\n", index+1);
+	// printBag(test.bag);
 	Knapsack k = _10knapsack(test.bag);
 	for(i = 0; i < test.bag.n; i++) {
 		if(test.expectedCombo[i] != k.combo[i]) {
 			testFailed = true;
 		}
 	}
+	if(test.expectedValue != k.value) {
+		testFailed = true;
+	}
 	char message[500];
 	if(testFailed == true) {
-		sprintf(message, "Test [ %d ] failed", index);
+		sprintf(message, "Test [ %d ] failed", index+ 1);
 		log_error(message);
 		printf("Result:   ");
 		printArray(k.combo, test.bag.n);
@@ -46,7 +49,7 @@ void runSingleTest(int index) {
 		sprintf(message, "{ %d }\n", k.value);
 		red(message);
 	} else {
-		sprintf(message, "Test [ %d ] ran successfully", index);
+		sprintf(message, "Test [ %d ] ran successfully", index + 1);
 		log_success(message);
 	}
 	printf("\n\n");
@@ -54,18 +57,12 @@ void runSingleTest(int index) {
 
 int main() {
 	loadTests();
-	// int weights[2] = {0,1};
-	// int values[2] = {2,3};
-
-	// Bag b = newBag(5, 2, weights, values);
-	// printf("%d\n", b.n);
-	// log_success("Batata");
-	// log_error("Batata");
-	// // hello("World");
-
 	int index;
+	printf("Running [ %d ] tests\n", NUMBER_OF_TESTS);
 	for(index = 0; index < NUMBER_OF_TESTS; index++) {
 		runSingleTest(index);
+		// if(index == 4) break;
 	}
+	// runSingleTest(8);
 	return 0;
 }
