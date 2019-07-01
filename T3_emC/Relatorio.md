@@ -71,7 +71,7 @@ Após preencher a matriz de recorrencia (vulgo cache), devemos percorrer ela do 
 
   Para cada item, iremos percorrer até 10 vezes, testando o valor para saber se ele faz ou não parte da melhor combinação.
 
-  Devemos armazenar o valor do peso restante dentro da bolsa ( *peso_restante* ), e ir atualizando conforme formor testando itens.
+  Devemos armazenar o valor do peso restante dentro da bolsa ( *peso_restante* ), e ir atualizando conforme formos testando os itens.
 
 ```.c
 int* extraiMelhorCombo() {
