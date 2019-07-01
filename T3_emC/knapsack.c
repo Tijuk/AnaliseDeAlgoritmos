@@ -73,20 +73,21 @@ int *extractBestCombo(Bag bag)
 	int itemIndex, weight, totalWeight, itemCount, v, optionA, optionB;
 	Item item;
 	int *bestCombo = calloc(bag.n, sizeof(int));
-	totalWeight = bag.size;
+	weight = bag.size;
 	for (itemIndex = bag.n; itemIndex > 0; itemIndex--)
 	{
 		item = bag.items[itemIndex - 1];
-		weight = totalWeight;
 		for (itemCount = 0; itemCount <= SET_OF_ITEM; itemCount++)
 		{
+			totalWeight = weight - (item.weight * itemCount);
+			iteracoes++;
 			if (cache[itemIndex][weight] == cache[item.id][totalWeight] + itemCount * item.value)
 			{
+				weight = totalWeight;
 				break;
+			} else {
+				bestCombo[item.id]++;
 			}
-			iteracoes++;
-			bestCombo[item.id]++;
-			totalWeight -= item.weight;
 		}
 	}
 	return bestCombo;

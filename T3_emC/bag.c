@@ -1,7 +1,6 @@
 #include "bag.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "constants.h"
 
 Bag newBag(int size, int n, int *weights, int *values)
@@ -12,11 +11,9 @@ Bag newBag(int size, int n, int *weights, int *values)
 	b.n = n;
 	b.items = (Item*)malloc(sizeof(Item) * n);
 	int i;
-	// printf("Bag Items [ %d ]\n", n);
 
 	for (i = 0; i < n; i++)
 	{
-		// printf("Bag [ %d ]\n", i);
 
 		Item item;
 		item.id = i;
@@ -24,13 +21,8 @@ Bag newBag(int size, int n, int *weights, int *values)
 		item.weight = weights[i];
 		item.count = SET_OF_ITEM;
 		item.original_count = SET_OF_ITEM;
-		// printf("%d <> %d <> %d\n", values[i], weights[i], 0);
 		b.items[i] = item;
 	}
-	// printf("Bag  Return\n");
-
-	// b.weights = weights;
-	// b.values = values;
 	return b;
 }
 
