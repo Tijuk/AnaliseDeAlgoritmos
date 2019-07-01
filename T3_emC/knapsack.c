@@ -1,16 +1,47 @@
 #include "knapsack.h"
-#include "bag.h"
+#include "log.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
+#ifdef DEBUG
+	#define __log printf
+// #elif STEP_BY_STEP
+// 	#define __log printf
+// 	#define __sbs printf
+#else
+	void __log(const char *fmt, ...)
+	{
+	}
+#endif
+
 int iteracoes = 0;
 int **cache;
 
-int maxOf(int,int);
+/**
+ * Retorna o valor máximo entro 2 números
+ */
+int maxOf(int, int);
+
+/**
+ * Inicializa o cache
+ */
 void initCache(Bag);
+
+/**
+ * Libera o espaço da memória em que o cache está alocado
+ */
 void freeCache(Bag);
+
+/**
+ * Seta um valor no cache
+ */
 void setCache(int, int, int);
+
+/**
+ * Imprime na tela os valores do cache
+ */
+void exibeCache(Bag bag);
 
 /**
  * Função de Recorrencia
@@ -22,16 +53,19 @@ void setCache(int, int, int);
  * 
  * @return {bool} returns (se o somatório dos pesos do item é maior que o peso da iteração atual)
  */
-bool opt(Item item, int index, int weight, int count) {
+bool opt(Item item, int index, int weight, int count)
+{
 	int totalWeight = count * item.weight;
 	int optionA, optionB;
 	iteracoes++;
-	if(totalWeight <= weight) {
+	if (totalWeight <= weight)
+	{
 		optionA = cache[item.id][weight - totalWeight] + count * item.value;
 		optionB = cache[index][weight];
 		setCache(index, weight, maxOf(optionA, optionB));
 		return false;
-	} return true;
+	}
+	return true;
 }
 
 /**
@@ -53,7 +87,8 @@ void generateCacheMatrix(Bag bag)
 			setCache(itemIndex, weight, cache[item.id][weight]);
 			for (itemCount = 1; itemCount <= SET_OF_ITEM; itemCount++)
 			{
-				if(opt(item, itemIndex, weight, itemCount) == true) {
+				if (opt(item, itemIndex, weight, itemCount) == true)
+				{
 					break;
 				}
 			}
@@ -85,7 +120,9 @@ int *extractBestCombo(Bag bag)
 			{
 				weight = totalWeight;
 				break;
-			} else {
+			}
+			else
+			{
 				bestCombo[item.id]++;
 			}
 		}
@@ -101,12 +138,28 @@ int *extractBestCombo(Bag bag)
  * 
  * @return {int} o valor do melhor combo
  */
-int getBestValue(Bag bag, int* bestCombo) {
-	int i, value;
-	value = 0;
-	for(i = 0; i < bag.n; i++) {
-		value += bestCombo[i] * bag.items[i].value;
+int getBestValue(Bag bag, int *bestCombo)
+{
+	int i;
+	int value = cache[bag.n][bag.size];
+#ifdef DEBUG
+	char message[500];
+	int redundancyValue = 0;
+	// Checagem de Redundancia para garantir que o somatório dos valores no combo são iguais ao valor máximo
+	for (i = 0; i < bag.n; i++)
+	{
+		redundancyValue += bestCombo[i] * bag.items[i].value;
 	}
+	if (redundancyValue != value)
+	{
+		sprintf(message, "Redundancy Test: { %d } != { %d }\n", value, redundancyValue);
+		log_error(message);
+	}
+	else
+	{
+		log_success("Redundancy Test: Passed");
+	}
+#endif
 	return value;
 }
 
@@ -116,8 +169,9 @@ Knapsack _10knapsack(Bag bag)
 	generateCacheMatrix(bag);
 	k.combo = extractBestCombo(bag);
 	k.value = getBestValue(bag, k.combo);
-	// printf("ITERACOES: { %d }\n", iteracoes);
-	// printf("N: { %d }\tB: { %d }\tN x B: { %d }\n", bag.n, bag.size, bag.n * bag.size * SET_OF_ITEM);
+	// __log("ITERACOES: { %d }\n", iteracoes);
+	// __log("N: { %d }\tB: { %d }\tN x B: { %d }\n", bag.n, bag.size, bag.n * bag.size * SET_OF_ITEM);
+	exibeCache(bag);
 	freeCache(bag);
 
 	return k;
@@ -134,7 +188,6 @@ Knapsack _10knapsack(Bag bag)
  * 
  * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
  */
-
 
 int maxOf(int a, int b)
 {
@@ -172,4 +225,24 @@ void setCache(int itemIndex, int weight, int value)
 {
 	// __log("Setting Cache at [%d][%d] to { %d }\n", weight, itemIndex, value);
 	cache[itemIndex][weight] = value;
+}
+
+void exibeCache(Bag bag)
+{
+	#ifdef STEP_BY_STEP
+	int i, j;
+	__log("Cache: \n");
+	for (i = 0; i < bag.n + 1; i++)
+	{
+		__log("[ ");
+		for (j = 0; j < bag.size + 1; j++)
+		{
+			__log("%-2d", cache[i][j]);
+			if (j < bag.size)
+				__log(", ");
+		}
+		__log(" ]\n");
+	}
+	__log("\n");
+	#endif
 }

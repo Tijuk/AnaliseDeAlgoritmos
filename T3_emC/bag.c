@@ -27,6 +27,7 @@ Bag newBag(int size, int n, int *weights, int *values)
 }
 
 void printBag(Bag bag) {
+	#ifdef DEBUG
 	printf("Bag: {\n\tsize: %d\n\tn: %d\n\tvalues: ", bag.size, bag.n);
 	int i;
 	printf("[");
@@ -58,4 +59,5 @@ void printBag(Bag bag) {
 		
 	}
 	printf("]\n");
+	#endif
 }
