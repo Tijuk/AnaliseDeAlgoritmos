@@ -16,10 +16,10 @@ bool runSingleTest(int index)
 	TestInstance test = getTestInstance(index);
 	bool testFailed = false;
 	int i;
-	// char header[500] = "Running Test [ %d ]";
+	char header[500] = "Running Instancia [ %d ]";
 	
-	// sprintf(header, header, index + 1);
-	// log_split(header, 10);
+	sprintf(header, header, index + 1);
+	log_split(header, 10);
 
 	printBag(test.bag);
 

@@ -31,14 +31,13 @@ Para cada sub-problema, deveremos olhar no subproblema do item anterior para pod
 void opt(int i, int w) {
 	int a,b;
 	int pesoTotal;
-	int opt_i_menos_1 = opt(i - 1, w); // valor no item anterior
-	int valor_de_retorno;
+	int valor_de_retorno = opt(i - 1, w); // valor no item anterior
 	// Atualiza o cache para o valor do item anterior naquele peso
 	for(int qtd = 0; qtd < 10; qtd++) { // para cada repetição do item (max: 10)
 		pesoTotal = item[i].peso * qtd;
 		if(pesoTotal <= w) { // Peso total dos itens não estoura o peso do sub-problema
 			a = opt(i - 1, w - pesoTotal) + qtd * item[i].valor;
-			b = opt_i_menos_1;
+			b = valor_de_retorno;
 			valor_de_retorno = max(a,b);
 		} else {
 			break;

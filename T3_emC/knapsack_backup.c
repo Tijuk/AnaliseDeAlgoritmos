@@ -16,11 +16,6 @@ void __log(const char *fmt, ...)
 #endif
 
 int iteracoes = 0;
-
-/**
- * Um cache de tamanho [bag.size + 1] x [bag.n + 1], inicializado inteiramente com 0. Onde o primeiro item está na posicao [1][0].
- * De forma a facilitar as condições da primeira iteração
- */
 int **cache;
 
 /**
@@ -49,44 +44,65 @@ void setCache(int, int, int);
 void exibeCache(Bag bag);
 
 /**
- * Realiza um teste de redundancia, calculando o valor de formas diferentes, para garantir que todas chegam ao mesmo resultado
- */
-void redundancy_test(Bag bag, int* combo);
-
-/**
- * Função criada apenas para garantir o valor encontrado bate com a versão em cache
- */
-int opt_recursive(Bag bag, int itemIndex, int weight);
-
-/**
  * Função de Recorrencia
  * 
- * @param {Bag} bag: É a mochila.
+ * @param {Item} item: É o item observado por último.
  * @param {int} index: É o index do item observado atualmente.
  * @param {int} weight: É o peso na iteração atual.
+ * @param {int} count: É a quantidade de items do item observado.
+ * 
+ * @return {bool} returns (se o somatório dos pesos do item é maior que o peso da iteração atual)
  */
-void opt(Bag bag, int itemIndex, int weight)
+bool opt(Item item, int index, int weight, int count)
 {
-	int itemCount; // Contador de repetição dos items [ 0 .. 10]
-	int totalWeight; // Peso Total ( Peso do Item x Contagem do Item )
-	int totalValue; // Valor Total ( Valor do Item x Contagem do Item )
+	int totalWeight = count * item.weight;
+	int optionA, optionB;
+	iteracoes++;
+	if (totalWeight <= weight)
+	{
+		optionA = cache[item.id][weight - totalWeight] + count * item.value;
+		optionB = cache[index][weight];
+		setCache(index, weight, maxOf(optionA, optionB));
+		return false;
+	}
+	return true;
+}
+
+void opt2(Bag bag, int i, int w)
+{
+	Item item = bag.items[i - 1];
+	int qtd, optionA, optionB, totalWeight, totalValue;
+	setCache(i, w, cache[item.id][w]);
+	for (qtd = 1; qtd < SET_OF_ITEM; qtd++)
+	{
+		totalWeight = qtd * item.weight;
+		totalValue = qtd * item.value;
+		if (totalWeight <= w)
+		{
+			optionA = cache[item.id][w - totalWeight] + totalValue;
+			optionB = cache[i][w];
+			setCache(i, w, maxOf(optionA, optionB));
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+void opt3(Bag bag, int itemIndex, int weight)
+{
+	int itemCount, totalWeight;
 	int optionA, optionB;
 	Item item = bag.items[itemIndex - 1];
 	setCache(itemIndex, weight, cache[item.id][weight]);
 	for (itemCount = 1; itemCount <= SET_OF_ITEM; itemCount++)
 	{
-		iteracoes++;
 		totalWeight = item.weight * itemCount;
-		totalValue = item.value * itemCount;
-		if (totalWeight <= weight) // Se o peso total não estourar o peso máximo do sub-problema
+		if (totalWeight <= weight)
 		{
-			// Opção A: valor total + valor no cache do item anterior, no peso - peso dos items.
-			optionA = cache[item.id][weight - totalWeight] + totalValue;
-
-			// Opção B: valor no cache atual.
+			optionA = cache[item.id][weight - totalWeight] + itemCount * item.value;
 			optionB = cache[itemIndex][weight];
-
-			// Salva no Cache o maior valor entre os 2.
 			setCache(itemIndex, weight, maxOf(optionA, optionB));
 		} else {
 			break;
@@ -108,9 +124,28 @@ void generateCacheMatrix(Bag bag)
 	{
 		for (weight = 0; weight <= bag.size; weight++)
 		{
-			opt(bag, itemIndex, weight);
+			opt3(bag, itemIndex, weight);
 		}
 	}
+	// int itemIndex, weight, totalWeight, itemCount, optionA, optionB;
+	// Item item;
+	// Knapsack k;
+	// initCache(bag);
+	// for (itemIndex = 1; itemIndex <= bag.n; itemIndex++)
+	// {
+	// 	item = bag.items[itemIndex - 1];
+	// 	for (weight = 0; weight <= bag.size; weight++)
+	// 	{
+	// 		setCache(itemIndex, weight, cache[item.id][weight]);
+	// 		for (itemCount = 1; itemCount <= SET_OF_ITEM; itemCount++)
+	// 		{
+	// 			if (opt(item, itemIndex, weight, itemCount) == true)
+	// 			{
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 /**
@@ -160,7 +195,22 @@ int getBestValue(Bag bag, int *bestCombo)
 	int i;
 	int value = cache[bag.n][bag.size];
 #ifdef DEBUG
-	redundancy_test(bag, bestCombo);
+	char message[500];
+	int redundancyValue = 0;
+	// Checagem de Redundancia para garantir que o somatório dos valores no combo são iguais ao valor máximo
+	for (i = 0; i < bag.n; i++)
+	{
+		redundancyValue += bestCombo[i] * bag.items[i].value;
+	}
+	if (redundancyValue != value)
+	{
+		sprintf(message, "Redundancy Test: { %d } != { %d }\n", value, redundancyValue);
+		log_error(message);
+	}
+	else
+	{
+		log_success("Redundancy Test: Passed");
+	}
 #endif
 	return value;
 }
@@ -247,63 +297,4 @@ void exibeCache(Bag bag)
 	}
 	__log("\n");
 #endif
-}
-
-/**
- * 
- */
-void redundancy_test(Bag bag, int* combo) {
-	int recursiveValue = opt_recursive(bag, bag.n, bag.size);
-	int value = cache[bag.n][bag.size];
-	int i;
-	char message[500];
-	int redundancyValue = 0;
-	// Checagem de Redundancia para garantir que o somatório dos valores no combo são iguais ao valor máximo
-	for (i = 0; i < bag.n; i++)
-	{
-		redundancyValue += combo[i] * bag.items[i].value;
-	}
-	if (redundancyValue != value || recursiveValue != value)
-	{
-		sprintf(message, "Redundancy Test: { %d } != { %d } != { %d }\n", value, redundancyValue, recursiveValue);
-		log_error(message);
-	}
-	else
-	{
-		log_success("Redundancy Test: Passed");
-	}
-}
-
-int opt_recursive(Bag bag, int itemIndex, int weight) {
-	#ifndef ALLOW_RECURSIVE_TEST
-		return cache[itemIndex][weight];
-	#endif
-	int itemCount; // Contador de repetição dos items [ 0 .. 10]
-	int totalWeight; // Peso Total ( Peso do Item x Contagem do Item )
-	int totalValue; // Valor Total ( Valor do Item x Contagem do Item )
-	int optionA, optionB;
-	Item item = bag.items[itemIndex - 1];
-	if(itemIndex == 0 || weight == 0) {
-		return 0;
-	}
-	int stored = opt_recursive(bag, itemIndex - 1, weight);
-	// setCache(itemIndex, weight, cache[item.id][weight]);
-	for (itemCount = 1; itemCount <= SET_OF_ITEM; itemCount++)
-	{
-		totalWeight = item.weight * itemCount;
-		totalValue = item.value * itemCount;
-		if (totalWeight <= weight) // Se o peso total não estourar o peso máximo do sub-problema
-		{
-			// Opção A: valor total + valor no cache do item anterior, no peso - peso dos items.
-			optionA = opt_recursive(bag, item.id, weight-totalWeight) + totalValue;
-
-			// Opção B: valor no cache atual.
-			optionB = stored;
-
-			stored = maxOf(optionA, optionB);
-		} else {
-			break;
-		}
-	}
-	return stored;
 }
