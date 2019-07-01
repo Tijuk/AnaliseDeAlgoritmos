@@ -109,10 +109,10 @@ int *extractBestCombo(Bag bag)
 	Item item;
 	int *bestCombo = calloc(bag.n, sizeof(int));
 	weight = bag.size;
-	for (itemIndex = bag.n; itemIndex > 0; itemIndex--)
+	for (itemIndex = bag.n; itemIndex > 0; itemIndex--) // Para cada item
 	{
 		item = bag.items[itemIndex - 1];
-		for (itemCount = 0; itemCount <= SET_OF_ITEM; itemCount++)
+		for (itemCount = 0; itemCount <= SET_OF_ITEM; itemCount++) // Para cada repetição
 		{
 			totalWeight = weight - (item.weight * itemCount);
 			iteracoes++;
@@ -232,10 +232,10 @@ void exibeCache(Bag bag)
 	#ifdef STEP_BY_STEP
 	int i, j;
 	__log("Cache: \n");
-	for (i = 0; i < bag.n + 1; i++)
+	for (i = 1; i < bag.n + 1; i++)
 	{
 		__log("[ ");
-		for (j = 0; j < bag.size + 1; j++)
+		for (j = 1; j < bag.size + 1; j++)
 		{
 			__log("%-2d", cache[i][j]);
 			if (j < bag.size)
