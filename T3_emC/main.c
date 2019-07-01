@@ -17,7 +17,7 @@ bool runSingleTest(int index)
 	bool testFailed = false;
 	int i;
 	char header[500] = "Running Instancia [ %d ]";
-	
+
 	sprintf(header, header, index + 1);
 	log_split(header, 10);
 
@@ -82,7 +82,7 @@ void printArray(int *values, int size, bool error)
 {
 	int i = 0;
 	char message[MAX_MESSAGE_SIZE];
-	sprintf(message, "[");
+	sprintf(message, "[ ");
 	for (; i < size; i++)
 	{
 		if (i > MAX_MESSAGE_SIZE)
@@ -99,7 +99,7 @@ void printArray(int *values, int size, bool error)
 			sprintf(message, "%s, %d", message, values[i]);
 		}
 	}
-	sprintf(message, "%s]\n", message);
+	sprintf(message, "%s ]\n", message);
 	if (error == true)
 	{
 		red(message);
@@ -152,17 +152,15 @@ void printTestResult(int index, TestInstance test, Knapsack k, bool testFailed)
 		sprintf(message, "{ %d }\n", test.expectedValue);
 		green(message);
 		printf("\n\n");
-
 	}
-	#ifndef NO_PRINT_ON_SUCCESS
+#ifndef NO_PRINT_ON_SUCCESS
 	else
 	{
 		sprintf(message, "Test [ %d ] ran successfully", index + 1);
 		log_success(message);
 		printf("\n\n");
-
 	}
-	#endif
+#endif
 #endif
 }
 
