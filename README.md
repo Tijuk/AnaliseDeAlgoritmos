@@ -1,7 +1,10 @@
+![Logo da PUC](https://exarandorum.files.wordpress.com/2015/01/brasaov.png)
+
+Esse repositório possui 3 trabalhos para a disciplina **INF1721 - Análise de Algoritmos** dada na PUC-Rio.
+Período: 2019.1
+Professor: [Marco Molinaro](http://www-di.inf.puc-rio.br/~mmolinaro/)
+
 # AnaliseDeAlgoritmos
 
-Esse repositório possui 3 trabalhos para a matéria:
-
-![Logo da PUC](https://logodownload.org/wp-content/uploads/2015/02/puc-rio-logo-2.jpg)
 
 # 1 - T1
