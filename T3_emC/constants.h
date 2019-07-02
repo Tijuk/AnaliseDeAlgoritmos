@@ -25,8 +25,8 @@
  * TESTING CONSTANTS
  */
 #define DEBUG
-#define ALLOW_RECURSIVE_TEST
+// #define ALLOW_RECURSIVE_TEST
 
-#define STEP_BY_STEP 4
+// #define STEP_BY_STEP 4
 
 #endif

@@ -67,6 +67,6 @@ void printBag(Bag bag)
 			printf(",%d", bag.items[i].count);
 		}
 	}
-	printf("]\n");
+	printf("]\n}\n");
 #endif
 }
