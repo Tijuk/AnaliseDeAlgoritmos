@@ -10,7 +10,9 @@ const component = {
     steps_input_k: DOM.get('input2'),
 	error: DOM.get('error'),
 	grid: DOM.get('grid'),
-	loading: DOM.get('loading')
+	loading: DOM.get('loading'),
+	btnGroup: DOM.get('btnGroup'),
+	testing: DOM.get('runningTests')
 }
 
 const constants = {

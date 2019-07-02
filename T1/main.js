@@ -136,8 +136,12 @@ function handlePerfButtonClick() {
 		HTMLHelper.show(component.loading);
 		HTMLHelper.show(component.grid);
 		HTMLHelper.hide(component.inputsContainer);
-		render.disable();
-		doStuffManyTimes();
+		setTimeout( () => {
+			// Otherwise, it doesn't re-render...
+			render.disable();
+			doStuffManyTimes();
+		}, 1000);
+		
 		
     } catch(error) {
       	console.error(error);
@@ -150,6 +154,8 @@ const tester = new Test();
 tester.doAll();
 
 window.onload = function() {
+	HTMLHelper.hide(component.testing);
+	HTMLHelper.show(component.btnGroup);
     component.steps_show.addEventListener('click', () => { 
 		HTMLHelper.toggleVisibility(component.inputsContainer)
 		HTMLHelper.resetGrid();
